@@ -43,7 +43,10 @@ def login():
         else:
             flash('密码不正确',category='error')
     else:
-        print("用户名未注册")
+        if usr=='':
+            pass
+        else:
+            flash("用户名未注册",category='error')
     return render_template('login.html')
 
 
@@ -232,63 +235,6 @@ def setting():
         
     return render_template('setting.html',usr=usr,url=url)
  
-
-#评论尝试（可删除）
-@blue.route('/<id>',methods=['GET','POST'])
-def page_try(id):
-    page=search_blog(id)
-    user=session.get('name')
-    like=0
-    likes=''
-    link=''
-    link_m=''
-    # s_like='zan'
-    big_like='zan'
-    if user:
-        if look_like(user,id):
-            big_like='yizan'
-    else:
-        pass
-    temp=user
-    text=request.form.get('comment')
-    if request.method=="GET":
-        link=request.args.get('ns')
-        # ppg=request.args.get('idp')
-        # print(link,ppg)
-        print(link)
-        if link:
-            if link=='1':
-                add_like(id)
-                add_like_to(user,id)
-            else:
-                pop_like(id)
-                del_like_to(user,id)
-            return jsonify({'r':'成功'})
-        else:
-            pass
-    if request.method=="POST":
-        add_comment(id,user,text,like)        #这里的ID是模板id是用来标定模板的id的
-    
-    # if request.method=="GET":
-        likes=request.form.get('num')
-        link_m=request.form.get('id')
-        print(likes,link_m)
-        if likes:
-            if likes=='1':
-                add_like(link_m)
-                add_like_to(user,link_m)
-            else:
-                pop_like(link_m)
-                del_like_to(user,link_m)
-            return jsonify({'r':'成功'})
-        else:
-            pass
-    comment=show_com(id)
-    lens=len(comment)
-    # idd=request.args.get('idd')
-    # print('卧槽啥情况',idd)
-    return render_template('评论尝试.html',page=page,comment=comment,temp=temp,lens=lens,big_like=big_like)
-
 
 
 #上下文处理器
