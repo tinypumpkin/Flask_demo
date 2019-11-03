@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block setting %}
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<link type='text/css' href='{{ url_for('static', filename='home_page.css') }}' rel='stylesheet'>
+
+<form method="POST" enctype="multipart/form-data">
+<div class="set">
+    <div class="tab">
+         <h2 class="tit"><span class="glyphicon glyphicon-cog"></span>&nbsp;用户设置</h2>
+         <ul class="nav nav-tabs active" style="padding-top: 2pc;">
+                <li class="active" style="float: right;"><a href="#">基本资料</a></li>
+        </ul>
+    </div>
+    <!-- <hr> -->
+    <div class="message">
+        <div class="mod-head">
+            <h3>基本信息</h3>
+        </div>
+
+        <div class="mod-body">
+                <dl>
+                    <dt>用户名:</dt>
+                    <dd>{{usr}}</dd>
+                </dl>
+                <dl>
+                        <dt>性别:</dt>
+                        <dd>
+                        <label>
+                        <input name="sex" id="sex" value="男" type="radio"> 男 </label>
+                        <label>
+                        <input name="sex" id="sex" value="女" type="radio"> 女 </label>
+                        </dd>
+                </dl>
+                
+                <dl>
+                        <dt><label>介绍:</label></dt>
+                        <div class="intr" ><input id="intr" class="form-control" name="intro" maxlength="128" type="text" value=""></div>
+                </dl>          
+        </div>
+    </div>
+        <div class="photo">
+                <dl>
+                        <dt class="pull-left">
+                     
+                            <img class="aw-border-radius-5" src="/static/upload/{{ url }}" alt="" id="avatar_src" style="width: 100px; height: 100px;">
+                         
+                        </dt>
+                        <dd class="pull-left">
+                        <h5>头像设置</h5>
+                        <p>支持 jpg、gif、png 格式的图片</p>
+                        <input type="file" id="media" name="avatar" >
+                        <input class="btn btn-mini btn-default" name="posts" type="submit"  style="margin-top: 2px; color: azure; background-color: #0fe4a4; border: none;" id="avatar_uploader" value="上传头像"> <span id="avatar_uploading_status" class="collapse" style="display: none;"><i class="aw-loading"></i> 文件上传中...</span>
+                        <div>
+                                {% for msg in get_flashed_messages(category_filter=['success'])  %}
+                                <div class="alert alert-success alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    {{ msg }}
+                                </div>
+                                {% endfor %}
+
+                                {% for msg in get_flashed_messages(category_filter=['error'])  %}
+                                <div class="alert alert-warning alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    {{ msg }}
+                                </div>
+                                {% endfor %}
+                        </div>
+                        </dd>
+                </dl>
+        </div> 
+        <button class="btn btn-default"  type="btn" id="save" style="width: 120px; height: 38px; float:right; margin-top: 4pc;; margin-right: 6pc;color: azure; background-color: #0fe4a4; border: 0pc;;">保存</button>
+
+</div>
+<script>
+      $('#save').click(function(){
+        var formData={'sex':$("#sex").val(),
+                    'intro':$("#intr").val(),}
+
+        $.ajax({
+            url:'/setting',
+            data:formData,
+            method:'POST',
+            success:function(result){
+                // alert(result.r);
+                console.log(result.r);
+            }
+        })
+    });
+</script>
+
+</form>
+{% endblock %}
+
+
+<!-- <script>
+var formData= $('#media').val();
+alert(formData);
+console.log(formData);
+</script> -->
+
+<script>
+            $('#avatar_uploader').click(function(){
+                var formData= $('#media').val();
+                $.ajax({
+                    type:'POST',
+                    url: '/setting',
+                    data: {'file_s':formData},
+                    processData:false,
+                    contentType:false,
+                    success:function(){
+                        alert('上传成功');
+                    }
+                });
+            });
+</script>

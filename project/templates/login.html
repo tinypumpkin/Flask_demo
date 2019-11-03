@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+        <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
+        <script src="https://cdn.bootcss.com/jquery-validate/1.19.1/jquery.validate.js"></script>
+        <script src="https://cdn.bootcss.com/jquery-validate/1.19.1/additional-methods.js"></script>
+        <link type='text/css' href='{{ url_for('static', filename='style.css') }}' rel='stylesheet'>
+        <!-- <link rel="stylesheet" href="style.css"> -->
+    </head>
+    <body>
+        <form action="#"  id="logform" method="POST" class="login">
+
+                <div class="mod-head " style="text-align: center">
+                        <img src="/static/logo.png" alt="" >
+                        <h3>登录</h3>
+                </div>
+            <input type="text" id="name_l" name="name_l" class="form-control" placeholder="用户名"> <br>
+            <!-- <label for="exampleInputPassword1">Password</label> -->
+            <input type="password" id="psd_l" name="psd_l" class="form-control" placeholder="密码"> <br>
+            <div class="row">
+                    <div class="col-md-8"><input class="reb" type="checkbox"id="remember"><label for="remember">记住我!</label></div>
+                    <div class="col-md-offset-2"><label class="reg">还没有账号?</label><a href="/regist/" class="reg">注册</a></div>
+            </div>
+            {% for msg in get_flashed_messages(category_filter=['error'])  %}
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                {{ msg }}
+            </div>
+            {% endfor %}
+            <br>
+            <input type="submit" id="btnsubmit" value="登录" class="btn  btn-large  btn-block btn-primary">  
+
+        </form>  
+    </body>
+    <footer>
+            <div class="footer text-muted">
+                    copyright &copy;2019, All Rights for 滑稽.
+                    <!-- <span class="hidden-xs" >Powered By <a href="https://github.com" rel="nofollow noreferrer noopener" target="_blank">zhao Center </a></span>
+            </div> -->
+            </footer>
+</html>
+
+<script>
+        $(document).ready(function(){
+
+            $("#logform").validate({
+                    rules:{
+                        name_l:{required:true},
+                        psd_l:{required:true}
+                    },
+                    messages:{
+                        name_l:{required:"用户名必填!"},
+                        psd_l:{required:"密码必填!"}
+               }
+            });
+        });
+</script>
+

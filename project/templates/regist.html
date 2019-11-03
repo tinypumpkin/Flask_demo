@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+        <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
+        <script src="https://cdn.bootcss.com/jquery-validate/1.19.1/jquery.validate.js"></script>
+        <script src="https://cdn.bootcss.com/jquery-validate/1.19.1/additional-methods.js"></script>
+        <link type='text/css' href='{{ url_for('static', filename='style.css') }}' rel='stylesheet'>
+        <!-- <link rel="stylesheet" href="style.css"> -->
+    </head>
+    <body>
+        <form action="#" id="regform" method="POST" class="regist" >
+
+                <div class="mod-head " style="text-align: center">
+                        <h2>注册</h2>
+                </div>
+            <div class="user_info">
+            <input type="text" id="usr" name="usr" class="form-control" placeholder="用户名" > <br>
+            <input type="password" id="psd" name="psd" class="form-control" placeholder="密码"> <br>
+            <input type="password" id="psd_r" name="psd_r" class="form-control" placeholder="再次输入密码"> <br>
+            <input type="text" id="mail" name="mail" class="form-control" placeholder="邮箱地址"> <br>
+            
+            <label><input id="valid" type="text" name="valid" class="valid"  placeholder="验证码" style="width:70%;"></label> <label><button type="button" id="tocode" class="btn btn-primary">验证码</button></label>
+
+            <!-- <div class="ton">
+            <input id="valid" type="text"  name="valid" class="valid" placeholder="验证码"><div class="bbc"></div><button type="button" class="btn btn-primary">验证码</button>
+            </div> -->
+            
+                <div class="row">
+                        <div class="col-md-8"><input id="agr" class="agr" type="checkbox"><label for="agr">同意!</label>&nbsp;<a href="#">理性发言</a></div>
+                        <div class="col-md-offset-2"><a href="/login" class="reg">已有帐号？</a></div>
+                </div>
+                {% for msg in get_flashed_messages(category_filter=['error'])  %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {{ msg }}
+                </div>
+                {% endfor %}
+            </div> 
+          
+       
+            <br>
+            <div style="text-align:center;">
+            <input type="reset" value="重置"class=" btn btn-large btn-block btn-warning">   
+            <br>
+            <input type="submit" id="btnsubmit" value="注册"class="btn btn-large  btn-block btn-primary"> 
+
+            </div>  
+        </form>  
+    </body>
+    
+    <footer>
+            <div class="footer text-muted">
+                    copyright &copy;2019, All Rights for 滑稽.
+                    <!-- <span class="hidden-xs" >Powered By <a href="https://github.com" rel="nofollow noreferrer noopener" target="_blank">zhao Center </a></span>
+            </div> -->
+            </footer>
+</html>
+
+
+
+
+
+<script>
+//      $(document).ready(function(){
+//              $("#btnsubmit").click(function(){
+//                 var user_info={
+//                         usr:$("#usr").val(),
+//                         psd:$("#psd").val(),
+//                         mail:$("#mail").val()
+//                 };
+//         $.ajax({
+//             type:'POST',
+//             url:'/regist/',
+//             data:user_info,
+//             success:function(response){
+//                     console.log('ok');
+//                     console.log(response);
+//             }
+//         });
+//        });
+//      });
+        $(document).ready(function(){
+
+            $("#regform").validate({
+                    rules:{
+                        usr:{required:true,minlength:2},
+                        psd:{required:true,minlength:6},
+                        psd_r:{required:true,equalTo:"#psd"},
+                        mail:{required:true,email:true},
+                        valid:{required:true},
+                        agr:{required:true}
+                    },
+                    messages:{
+                            usr:{required:"用户名必填!",minlength:"用户名长度不得小于2位!"},
+                            psd:{required:"密码必填!",minlength:"密码长度不得小于6位!"},
+                            psd_r:{required:"重复密码必填!",equalTo:"两次密码输入不一致!"},
+                            mail:{required:"邮箱必填!",email:"邮箱格式不正确!"},
+                            valid:{required:"验证码必填"},
+                            agr:{required:"同意协议才能注册"}
+                            }
+            });
+     });
+</script>
+
+<script>
+    $("#tocode").click(function(){                        
+    $.ajax({
+        url:'/regist/',
+        data:{'gcod':$('#mail').val()},
+        method:'POST',
+        success:function(result){
+            console.log(result);  
+        } }) });
+</script>

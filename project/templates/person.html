@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block person %}
+
+<link type='text/css' href='{{ url_for('static', filename='home_page.css') }}' rel='stylesheet'>
+
+<div class="card">
+
+<div style="width:1000px; height:200px;">
+            <img src="/static/2.jpg" style="width: 100%;height: 100%;object-fit:cover;">
+</div>
+
+<div class="avatar">
+        {% if info.img_url %}
+        <img src="/static/upload/{{info.img_url}}" style="width: 100%;height: 100%;object-fit:cover;">
+        {% else %}
+        <img src="/static/upload/avatar-img.png" style="width: 100%;height: 100%;object-fit:cover;">
+        {% endif %}
+</div>
+
+<div class="userinfo">
+    <p class="usr">{{ info.usr }}</p>
+    <p class="intro">个人简介&nbsp;&nbsp;&nbsp;{{info.intro}}</p>
+   <p class="sex">性别&nbsp;&nbsp;&nbsp;{{info.sex}}</p> 
+</div>
+
+</div>
+
+<div class="res">
+
+<div class="left">
+        <div class="nav" style="background-color: white;">
+        <div class="main" style="position:relative;width:650px; height:40px;margin-top: 5px;">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav" style="margin-top:-5px;">
+                <li style="margin-left:25px"><a style="color:#777;"  href="http://127.0.0.1:5000/person/{{ info.usr }}/p">文章</a></li>
+                <li style="margin-left:65px"><a style="color:#777;"  href="http://127.0.0.1:5000/person/{{ info.usr }}/r">评论</a></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+
+        <div class="content">
+                {% for i in replay %}
+                <li style="list-style: none;">
+                
+                <div class="com-group">
+                <img style="width: 38px;height: 38px;margin: 2px;margin-right:5px; border-radius: 10%;" src="/static/nuclear.jpg" alt="" class="avatar">
+            
+                <span class="usr"><a href="/person/{{i.username}}">{{i.page_title}}</a></span>
+            
+                <span class="time" style="float:right;line-height:40px; margin-right:2pc;color: lightgray;">{{i.time}}</span>
+                 <!-- <span class="like">{{i.like}}</span> -->
+                </div>
+
+                <p class="text" style="margin-left: 48px">{{i.texts}}</p>
+                
+                </li>
+                <hr>
+                {% endfor %}
+
+                {% for i in page %}
+                <li style="list-style:none;"> 
+                  <div class="text-group" style="text-align: left;">
+                    <p class="title"><a id="num" href="/page/{{i.id}}">{{ i.titles }}</a> <span class="badge">{{ i.category }}</span></p>
+                    <p class="question">{{ i.texts }}</p>
+                    <P class="info">
+                      <span class="author">{{ i.user }}</span>
+                      <span class="time">{{ i.time }}</span>
+                    </P>
+                  </div>
+            
+                </li>
+                <hr width="100%">
+                {% endfor %}      
+        </div>
+    </div>
+
+    <div class="right" style="width: 340px;">
+            <div class="title">个人成就</div>
+            <hr>
+            <div class="like">
+                <span class="glyphicon glyphicon-thumbs-up"></span>
+            获得的赞{{num}} <span class="badge">{{num_like}}</span></a>
+            </div>
+            <div class="public">
+                    <span class="glyphicon glyphicon-book"></span>
+                    发布的文章 {{article}}  <span class="badge">{{num_article}}</span></a>
+                </div>
+            <div class="comment">
+                <span class="glyphicon glyphicon-pencil"></span>
+                发表的评论  {{comment}} <span class="badge">{{num_comment}}</span></a>
+            </div>
+        </div>
+        
+
+</div>
+
+
+
+
+{% endblock %}

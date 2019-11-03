@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+
+{% block box %}
+
+
+<link type='text/css' href='{{ url_for('static', filename='show_index.css') }}' rel='stylesheet'>
+
+<div >
+<ul>
+  {% for i in shows %}
+  <li >
+    <div class="avatar-group">
+      {% if url %}
+      <img src="/static/upload/{{url}}" alt="" class="avatar">
+      {% else %}
+      <img src="/static/nuclear.jpg" alt="" class="avatar">
+      {% endif %}
+    </div>
+    <div class="text-group">
+      <p class="title"><a id="nu" href="/page/{{i.id}}">{{ i.titles }}</a> <span class="badge">{{ i.category }}</span> <span id="sp" class="badge badge-primary">{{ i.like }}</span> </p>
+      <p class="question">{{ i.texts }}</p>
+      <P class="info">
+        <span class="author">{{ i.user }}</span>
+        <span class="time">{{ i.time }}</span>
+      </P>
+    </div>
+    <hr>
+  </li>
+  <hr width="100%">
+  
+  {% endfor %}
+</ul>
+</div>
+
+<script>
+    $("#nu").click(function(){
+    var n=1;
+$.ajax({
+    url:'/',
+    data:{'n':n,},
+    method:'POST',
+    success:function(result){
+        console.log($('#num').val());  
+    }
+}); });
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

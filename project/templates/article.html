@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block main%} 
+
+<form action="" method="POST">
+    <div>
+    <div class="container" style="width:600px;margin: 0 auto;text-align: right;">
+            <h3 style="text-align: center">发布文章</h3>
+        <div class="form-group">
+                <div class="page-header">
+            
+                        <div style="text-align: left;">
+                            <select id="category" name="cat" style="width:18%;background-color:#0fe4a4;color: white;margin: 0;
+                                font-size: 100%; border: 0" class="btn btn-default">
+                                <option>-- 类别 --</option>
+                                <option value="生活">生活</option>
+                                <option value="学习">学习</option>
+                                <option value="娱乐">娱乐</option>
+                                <option value="工作">工作</option>
+                                <!-- <li role="separator" class="divider"></li> -->
+                                <option value="python">python</option>
+                                <option value="Linux">Linux</option>
+                                <option value="Flask">Flask</option>
+                                <option value="Tensorflow">Tensorflow</option>
+                            </select>
+                    </div><br>
+                    {% for msg in get_flashed_messages(category_filter=['error'])  %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {{ msg }}
+                    </div>
+                    {% endfor %}
+
+                <!-- <div class="dropdown" style="text-align: left">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          类别
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                          <li><a href="#">生活</a></li>
+                          <li><a href="#">学习</a></li>
+                          <li><a href="#">娱乐</a></li>
+                          <li><a href="#">工作</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="#">Linux</a></li>
+                          <li><a href="#">Flask</a></li>
+                          <li><a href="#">python</a></li>
+                        </ul>
+                      </div><br> -->
+ 
+
+            <input id="title" type="text" placeholder="请输入标题" class="form-control" name="title">
+        </div>
+        <div class="form-group">
+                <div class="form-group">
+                    <textarea id="text" name="container" rows="7" class="form-control" placeholder="请输入内容"></textarea>
+                </div>
+        </div>
+        <button id="post" class="btn" style="color: azure; background-color: #0fe4a4;margin-bottom: 14px;">发布</button>
+    </div>
+    </div>
+</form>
+
+
+
+
+
+<script>
+        // $("#category").change(function(){                        
+        //     $.ajax({
+        //         url:'/article',
+        //         data:{'cat':$('#category').val()},
+        //         method:'POST',
+        //         success:function(result){
+        //             console.log($('#category').val());
+        //             console.log(result);  
+        //         }
+        //     }); });
+
+            $("#post").change(function(){                        
+            $.ajax({
+                url:'/article',
+                data:{'cat':$('#category').val(),
+                    'title':$('#title').val(),
+                    'text': $('#text').val()},
+                method:'POST',
+                success:function(result){
+                    console.log($('#category').val());
+                    console.log(result);  
+                }
+            }); });
+</script>
+
+
+
+{% endblock %}

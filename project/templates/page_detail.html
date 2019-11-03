@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block detial %}
+
+{% block head %}
+<link type='text/css' href='{{ url_for('static', filename='comment.css') }}' rel='stylesheet'>
+<link type='text/css' href='{{ url_for('static', filename='like.css') }}' rel='stylesheet'>
+{% endblock %}
+
+{% block page_detial %}
+    <h3 class="page-title" style="padding-top: 2pc;"> {{ page.titles }}</h3>
+    <p class="page-info" style="margin-top: 2pc; " >
+        <span style="margin-left: 1pc;">作者：<a href="/person/{{page.user}}">{{ page.user}}</a></span>
+        <span style="margin-left: 1pc; ">时间：{{page.time}}</span>
+        <span id="praise" class="praise"><img src="/static/icon/{{big_like}}.png" id="praise-img" /></span>
+
+
+        
+    </p>
+    <hr>
+    <p style="margin-left: 1pc;margin-right: 1pc; text-align: left;">
+        {{page.texts}}
+    </p>
+    <hr>
+
+    <h4 style="text-align: left;margin-left: 1pc;">评论:({{lens}})</h4>
+    <form action="#" method="POST">
+        <div style="width: 70%;margin-left: 1pc; padding-bottom: 0pc">            
+        <div class="form-group">
+            <input name="comment" type="text" class="form-control" placeholder="请填写评论内容">
+        </div>
+        <div class="form-group" style="text-align: right;">
+            <button class="btn " style="color: azure;background-color: #0fe4a4">评论</button>
+        </div>
+        </div>
+    </form>
+
+    <script>
+        $(function(){
+            $("#praise").click(function(){
+                var praise_img = $("#praise-img");
+                var num=0;
+                if(praise_img.attr("src") == ("/static/icon/yizan.png")){
+                    $(this).html("<img src='/static/icon/zan.png' id='praise-img' class='animation' style='width: 20px; height: 20px;  margin-left: 1pc;' />");
+                    num -=1;
+                }else{
+                    $(this).html("<img src='/static/icon/yizan.png' id='praise-img' class='animation' style='width: 20px; height: 20px;  margin-left: 1pc;' />");
+                    num +=1;
+                }
+                var formD={'ns':num,}
+            $.ajax({
+            url:'/page/{{page.id}}',
+            data:formD,
+            method:'GET',
+            success:function(re){
+                alert(re.r);
+            } });  
+            });
+        })
+    </script>
+{% endblock %}
+
+<ul class="com" style="text-align: left;">
+    {% for i in comment%}
+    <li style="list-style: none;">
+    
+    <div class="com-group">
+    <img style="width: 38px;height: 38px;margin: 2px;margin-right:5px; border-radius: 10%;" src="/static/nuclear.jpg" alt="" class="avatar">
+
+    <span class="usr"><a href="/person/{{i.username}}">{{i.username}}</a></span>
+    
+    <span id="{{i.id}}" class="like"><img style="width: 15px; height:15px;" src="/static/icon/zan.png" id="{{i.id}}-img" /></span>
+
+    <span class="time" style="float:right;line-height:40px; margin-right:2pc;color: lightgray;">{{i.time}}</span>
+     <!-- <span class="like">{{i.like}}</span> -->
+    </div>
+    {% if i.username==temp %}
+    <a href="/page/delete/{{page.id}}/{{i.id}}"><button class="btn" id="btt"  style="float: right; margin-right:3pc;color: azure;background-color: #0fe4a4">删除</button></a>
+    {% endif %}
+    <p class="text" style="margin-left: 48px">{{i.texts}}</p>
+    
+    </li>
+    <hr>
+
+    <!-- <script>
+            $("#btt").click(function(){
+            var n="{{i.id}}"; 
+        $.ajax({
+            url:'/page{{i.id}}',
+            data:{'idd':n},
+            method:'POST',
+            success:function(result){
+                console.log($('#num').val());  
+            }
+        }); });
+        </script> -->
+
+<script>
+    $(function(){
+        $("#{{i.id}}").click(function(){
+            var like_img = $("#{{i.id}}-img");
+            var num=0;
+            // alert(like_img.attr("src"))
+            if(like_img.attr("src") == ("/static/icon/yizan.png")){
+                $(this).html("<img src='/static/icon/zan.png' id='{{i.id}}-img' class='animation' style='width: 15px; height: 15px;' />");
+                num -=1;
+                // alert(num);
+            }else{
+                $(this).html("<img src='/static/icon/yizan.png' id='{{i.id}}-img' class='animation' style='width: 15px; height: 15px;' />");
+                num +=1;
+                // alert(num);
+            }
+        });
+    //     $.ajax({
+    //     url:'/page{{i.id}}',
+    //     data:{'num':num},
+    //     method:'POST',
+    //     success:function(result){
+    //         alert(result);
+    //     }
+    // });
+    })
+</script>
+
+
+    {% endfor %}
+</ul>
+
+
+
+{% endblock %}
