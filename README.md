@@ -1,5 +1,5 @@
 ## flask的小demo 
 
 
-![image](https://github.com/tinypumpkin/Flask_demo/blob/master/photo/1.PNG)
+![23465.png](https://i.loli.net/2019/11/03/pLGUlSTaN2HKsXJ.png)
 
